@@ -1,0 +1,3 @@
+Emethods,Epurpose,Sum,IsPayd
+EMethods.credit,Epurpose.electrical,250,FALSE
+EMethods.cash,Epurpose.cleaner,300,FALSE

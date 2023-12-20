@@ -1,0 +1,4 @@
+Name,Floor,Phone,Type,IsPaid
+berkovitz,3,544065486,EtypeTenant.apartment,TRUE
+shvartzman,1,564489408,EtypeTenant.apartment,FALSE
+avrahmskey,2,8488897,EtypeTenant.unit,FALSE
