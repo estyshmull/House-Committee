@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Solid.Data\Solid.Data.csproj" />
+    <ProjectReference Include="..\Solid.Service\Solid.Service.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using Solid.Data;
 using Solid.Data.Repositories;
 using Solid.Service;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
