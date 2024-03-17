@@ -1,27 +1,41 @@
-﻿using newHouseCommittee.Entities;
-using Solid.Core.Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using newHouseCommittee.Entities;
+using Solid.Core.Repositories;
+using Solid.Core.Service;
+using Solid.Core.Servies;
 
 namespace Solid.Service
 {
-    internal class PaymentService:IPaymentService
+    public class PaymentService:IPaymentService
     {
-        private readonly IPaymentService paymentService;
-        public PaymentService(IPaymentService paymentService)
+        private readonly IPaymentRepository paymentRepository;
+        public PaymentService(IPaymentRepository payment)
         {
-            this.paymentService = paymentService;
+            this.paymentRepository = payment;
         }
-        public List<Payment> GetPaymentes()
+
+        public Payment AddPayment(Payment payment)
         {
-            return paymentService.GetPaymentes();
+            return paymentRepository.AddPayment(payment);
         }
-        public Payment GetPayMentById(int id)
+
+        public Payment GetPaymentById(int id)
         {
-            return paymentService.GetPayMentById((int)id);
+            return paymentRepository.GetPaymentById(id);
+        }
+
+        public List<Payment> GetPayments()
+        {
+            return paymentRepository.GetPayments();
+        }
+
+        public Payment UpdatePayment(int id, Payment payment)
+        {
+            return paymentRepository.UpdatePayment(id, payment);
         }
     }
 }

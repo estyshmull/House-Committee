@@ -8,65 +8,48 @@ using System.Threading.Tasks;
 
 namespace Solid.Data.Repositories
 {
-    internal class TenantRepository : ITenantRepository
+    public class TenantRepository : ITenantRepository
     {
         private readonly DataContext dataContext;
         public TenantRepository(DataContext dataContext)
         {
             this.dataContext = dataContext;
         }
-        public List<Tenant> GetTenantList()
-        {
-            return dataContext.tenantList;
-        }
-        public Tenant GetTenantById(int id)
-        {
-            if (dataContext.tenantList[id] != null)
-                return dataContext.tenantList[id];
-            return null;
-        }
-        public int[] GetMonthIsNotPaid(int id, string name)
-        {
-            if (dataContext.tenantList[id] == null)
-                return null;
-            int[] arr = new int[12], a2;
-            int k = 0;
-            for (int i = 0; i < dataContext.tenantList[id].IsPaid.Count; i++)
-            {
-                if (!dataContext.tenantList[id].IsPaid[i])
-                    arr[k++] = i + 1;
-            }
-            a2 = new int[k];
-            for (int i = 0; i < a2.Length; i++)
-            {
-                a2[i] = arr[i];
-            }
-            return a2;
-        }
+
         public Tenant AddTenant(Tenant tenant)
         {
-            dataContext.tenantList.Add(tenant);
+            dataContext.TenantList.Add(tenant);
+            dataContext.SaveChanges();
             return tenant;
         }
+
+        public void DeleteTenant(int id)
+        {
+            var user = GetTenantById(id);
+            dataContext.TenantList.Remove(user);
+            dataContext.SaveChanges();
+        }
+
+        public Tenant GetTenantById(int id)
+        {
+            return dataContext.TenantList.Find(id);
+        }
+
+        public List<Tenant> GetTenants()
+        {
+            return dataContext.TenantList.ToList();
+        }
+
         public Tenant UpdateTenant(int id, Tenant tenant)
         {
-            if (dataContext.tenantList[id] == null)
-                return null;
-            else
+            var updateTenant = GetTenantById(id);
+            if (updateTenant != null)
             {
-                var update = dataContext.tenantList.Find(u => u.Id == id);
-
-                update.IsPaid = tenant.IsPaid;
-                return update;
+                updateTenant.Name=tenant.Name;
+                updateTenant.Phone=tenant.Phone;    
+                dataContext.SaveChanges();
             }
-
-        }
-        public void Delete(int id)
-        {
-            if (dataContext.tenantList[id] != null)
-            {
-                dataContext.tenantList.Remove(dataContext.tenantList[id]);
-            }
+            return updateTenant;
         }
     }
 }

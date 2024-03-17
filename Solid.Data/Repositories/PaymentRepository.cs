@@ -5,50 +5,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Solid.Data.Repositories
 {
-    public class PaymentRepository:IPaymentRepository
+    public class PaymentRepository: IPaymentRepository
     {
         private readonly DataContext dataContext;
         public PaymentRepository(DataContext dataContext)
         {
             this.dataContext = dataContext;
         }
-        public List<Payment> GetPaymentes()
+
+        public Payment AddPayment(Payment payment)
         {
-            return dataContext.paymentList;
-        }
-        public Payment GetPayMentById(int id)
-        {
-            if (dataContext.paymentList[id] == null)
-                return null;
-            return dataContext.paymentList[id];
-        }
-        public List<Payment> Get(Epurpose epurpose)
-        {
-            if (epurpose == Epurpose.electrical || epurpose == Epurpose.cleaner || epurpose == Epurpose.water)
-            {
-                var a = dataContext.paymentList.FindAll(x => x.epurpose == epurpose).ToList();
-                return a;
-            }
-            return null;
-        }
-        Payment Post(Payment payment)
-        {
-            dataContext.paymentList.Add(payment);
+            dataContext.PaymentList.Add(payment);
+            dataContext.SaveChanges();
             return payment;
         }
-        public Payment Put(int id, Payment payment)
+
+        public Payment GetPaymentById(int id)
         {
-            if (dataContext.paymentList[id] == null)
-                return null;
-            else
+            return dataContext.PaymentList.Find(id);
+        }
+
+        public List<Payment> GetPayments()
+        {
+            return dataContext.PaymentList.ToList();
+        }
+
+        public Payment UpdatePayment(int id,Payment payment)
+        {
+            var updatePayment = GetPaymentById(id);
+            if (updatePayment != null)
             {
-                var update = dataContext.paymentList.Find(u => u.Id == id);
-                update.IsPayd = payment.IsPayd;
-                return update;
+                updatePayment.Year = payment.Year;
+                updatePayment.Month = payment.Month;
+                dataContext.SaveChanges();
             }
+            return updatePayment;
         }
     }
 }

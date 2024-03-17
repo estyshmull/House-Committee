@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace Solid.Core.Service
 {
-    public interface ITenanService
+    public interface ITenantService
     {
-        List<Tenant> GetTenantList();
+        List<Tenant> GetTenants();
         Tenant GetTenantById(int id);
+        Tenant AddTenant(Tenant tenant);
+        Tenant UpdateTenant(int id, Tenant tenant);
+        void DeleteTenant(int id);
     }
 }

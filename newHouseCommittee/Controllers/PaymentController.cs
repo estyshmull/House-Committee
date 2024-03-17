@@ -1,63 +1,62 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using newHouseCommittee.Entities;
+using newHouseCommittee.Models;
+using Solid.Core.DTOs;
+using Solid.Core.Repositories;
+using Solid.Core.Service;
+using Solid.Core.Servies;
+using Solid.Service;
+using System;
 
 namespace newHouseCommittee.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentController : Controller
+    public class PaymentController : ControllerBase
     {
-        private DataContext dataContext;
-
-        public PaymentController(DataContext context)
+        private readonly IPaymentService paymentService;
+        private readonly IMapper _mapper;
+        public PaymentController(IPaymentService service,IMapper mapper)
         {
-            dataContext = context;
+            _mapper = mapper;
+            paymentService = service;
         }
-
-        // GET: api/<PaymentController>
+        // GET: api/<MonthController>
         [HttpGet]
-        public List<Payment> Get()
+        public ActionResult<Payment> Get()
         {
-            return dataContext.paymentList;
+            var list = paymentService.GetPayments();
+            var listDto = _mapper.Map<IEnumerable<PaymentDTOs>>(list);
+            return Ok(listDto);
         }
 
-        // GET api/<PaymentController>/5
+        // GET api/<MonthController>/5
         [HttpGet("{id}")]
         public ActionResult<Payment> Get(int id)
         {
-            if (dataContext.paymentList[id] == null)
-                return NotFound();
-            return dataContext.paymentList[id];
+            var payment = paymentService.GetPaymentById(id);
+            var paypentDto = _mapper.Map<PaymentDTOs>(payment);
+            return Ok(paypentDto);
         }
 
-        // GET api/<PaymentController>/5
-        [HttpGet("{epurpose}")]
-        public ActionResult<List<Payment>> Get(Epurpose epurpose)
-        {
-            if (epurpose == Epurpose.electrical || epurpose == Epurpose.cleaner || epurpose == Epurpose.water)
-            {
-                var a = dataContext.paymentList.FindAll(x => x.epurpose == epurpose).ToList();
-                return a;
-            }
-            return NotFound();
-        }
-
-        // POST api/<PaymentController>
+        // POST api/<MonthController>
         [HttpPost]
-        public void Post(EMethods eMethods_Of, Epurpose epurpose, int sum)
+        public ActionResult Post([FromBody] PaymentModel payment)
         {
-            dataContext.paymentList.Add(new Payment() { eMethods = eMethods_Of, epurpose = epurpose, Sum = sum });
+            var paymentToAdd=new Payment{ Month=payment.Month,Year=payment.Year};
+            var newPayment = paymentService.AddPayment(paymentToAdd);
+            return Ok(newPayment);
         }
 
-        // PUT api/<PaymentController>/5
+        // PUT api/<MonthController>/5
         [HttpPut("{id}")]
-        public void Put(int id)
+        public ActionResult Put(int id,[FromBody] PaymentDTOs payment)
         {
-            if (dataContext.paymentList[id] == null)
-                NotFound();
-            else
-                dataContext.paymentList[id].IsPayd = true;
+            var paymentToAdd = new Payment { Month = payment.Month, Year = payment.Year };
+            var newPayment = paymentService.UpdatePayment(id,paymentToAdd);
+            return Ok(newPayment);
         }
 
     }

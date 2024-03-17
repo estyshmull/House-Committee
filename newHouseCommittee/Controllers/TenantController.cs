@@ -1,80 +1,69 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using newHouseCommittee.Entities;
+using newHouseCommittee.Models;
+using Solid.Core.DTOs;
+using Solid.Core.Repositories;
+using Solid.Core.Service;
+using Solid.Core.Servies;
+using Solid.Service;
+using System;
 
 namespace newHouseCommittee.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TenantController : Controller
+    public class TenantController : ControllerBase
     {
-        private DataContext dataContext;
-        public TenantController(DataContext context)
+        private readonly ITenantService tenantService;
+        private readonly IMapper _mapper;
+        public TenantController(ITenantService service,IMapper mapper)
         {
-            dataContext = context;
+            _mapper = mapper;   
+            tenantService = service;
         }
         // GET: api/<TenantController>
         [HttpGet]
-        public List<Tenant> Get()
+        public ActionResult<Tenant> Get()
         {
-            return dataContext.tenantList;
+            var list = tenantService.GetTenants();
+            var listDto = _mapper.Map<IEnumerable<TenantDTOs>>(list);
+            return Ok(listDto);
         }
 
         // GET api/<TenantController>/5
         [HttpGet("{id}")]
         public ActionResult<Tenant> Get(int id)
         {
-            if (dataContext.tenantList[id] == null)
-                return NotFound();
-            return dataContext.tenantList[id];
-        }
-
-        [HttpGet("{id},{name}")]
-        public ActionResult<int[]> Get(int id, string name)
-        {
-            if (dataContext.tenantList[id] == null)
-                return NotFound();
-            int[] arr = new int[12], a2;
-            int k = 0;
-            for (int i = 0; i < dataContext.tenantList[id].IsPaid.Count; i++)
-            {
-                if (!dataContext.tenantList[id].IsPaid[i])
-                    arr[k++] = i + 1;
-            }
-            a2 = new int[k];
-            for (int i = 0; i < a2.Length; i++)
-            {
-                a2[i] = arr[i];
-            }
-            return a2;
+            var tenant=tenantService.GetTenantById(id);
+            var tenantDto=_mapper.Map<TenantDTOs>(tenant);
+            return Ok(tenantDto);
         }
 
         // POST api/<TenantController>
         [HttpPost]
-        public void Post(string name, string phone, EtypeTenant etype, int floor)
+        public ActionResult Post([FromBody] TenantModel tenant)
         {
-            dataContext.tenantList.Add(new Tenant() { floor = floor, Name = name, Phone = phone, type = etype, IsPaid = new List<bool>() });
+            var tenantToAdd = new Tenant {Name=tenant.Name,Phone=tenant.Phone };
+            var newTenant = tenantService.AddTenant(tenantToAdd);
+            return Ok(newTenant);
         }
 
         // PUT api/<TenantController>/5
         [HttpPut("{id}")]
-        public void Put(int id, EmonthName month)
+        public ActionResult Put(int id, Tenant tenant)
         {
-            if (dataContext.tenantList[id] == null)
-                NotFound();
-            else
-                dataContext.tenantList[id].IsPaid[(int)month] = true;
+            var tenantToAdd = new Tenant { Name = tenant.Name, Phone = tenant.Phone };
+            var newTenant = tenantService.UpdateTenant(id,tenantToAdd);
+            return Ok(newTenant);
         }
         // DELETE api/< TenantController >/ 5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            if (dataContext.tenantList[id] != null)
-            {
-                dataContext.tenantList.Remove(dataContext.tenantList[id]);
-            }
-            else
-                NotFound();
+            tenantService.DeleteTenant(id);
+            return NoContent();
         }
     }
 }

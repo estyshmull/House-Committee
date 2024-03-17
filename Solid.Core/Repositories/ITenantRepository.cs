@@ -9,12 +9,10 @@ namespace Solid.Core.Repositories
 {
     public interface ITenantRepository
     {
-        List<Tenant> GetTenantList();
+        List<Tenant> GetTenants();
         Tenant GetTenantById(int id);
-        int[] GetMonthIsNotPaid(int id, string name);
         Tenant AddTenant(Tenant tenant);
-        Tenant UpdateTenant(int id,Tenant tenant);
-        void Delete(int id);
-
+        Tenant UpdateTenant(int id, Tenant tenant);
+        void DeleteTenant(int id);
     }
 }

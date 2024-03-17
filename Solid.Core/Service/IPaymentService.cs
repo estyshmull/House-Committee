@@ -9,7 +9,9 @@ namespace Solid.Core.Service
 {
     public interface IPaymentService
     {
-        List<Payment> GetPaymentes();
-        Payment GetPayMentById(int id);
+        List<Payment> GetPayments();
+        Payment GetPaymentById(int id);
+        Payment AddPayment(Payment payment);
+        Payment UpdatePayment(int id, Payment payment);
     }
 }

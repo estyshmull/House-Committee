@@ -1,8 +1,9 @@
+using Microsoft.Extensions.DependencyInjection;
 using newHouseCommittee.Entities;
+using Solid.Core;
 using Solid.Core.Repositories;
 using Solid.Core.Service;
 using Solid.Core.Servies;
-using Solid.Data;
 using Solid.Data.Repositories;
 using Solid.Service;
 
@@ -16,13 +17,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IMonthRepository, MonthRepository>();
-builder.Services.AddScoped<IMonthService,MonthService>();
-builder.Services.AddScoped<ITenantRepository, ITenantRepository>();
-builder.Services.AddScoped<ITenanService,TenantService>();
-builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-builder.Services.AddScoped<IPaymentService,PaymentService>();
+builder.Services.AddScoped<IBiuldingRepository, BiuldingRepository>();
 
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+builder.Services.AddScoped<ITenantRepository, TenantRepository>();
+
+builder.Services.AddScoped<IBiuldingService,BiuldingService>();
+
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+
+builder.Services.AddScoped<ITenantService,TenantService>();
+
+builder.Services.AddDbContext<DataContext>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
