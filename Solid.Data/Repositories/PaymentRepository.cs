@@ -23,7 +23,7 @@ namespace Solid.Data.Repositories
             dataContext.SaveChanges();
             return payment;
         }
-
+         
         public Payment GetPaymentById(int id)
         {
             return dataContext.PaymentList.Find(id);

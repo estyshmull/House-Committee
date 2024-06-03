@@ -5,7 +5,7 @@ namespace newHouseCommittee.Entities
     public class Biulding
     {
         [Key]
-        public int Id { get; }
+        public int Id { get; set; }
         public string Street { get; set; }
         public int NumberStreet { get; set; }
         public int City { get; set; }

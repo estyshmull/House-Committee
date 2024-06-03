@@ -5,7 +5,7 @@ namespace newHouseCommittee.Entities
     public class Payment
     {
         [Key]
-        public int Id { get; }
+        public int Id { get; set; }
 
         public int Month { get; set; }
         public int Year { get; set; }

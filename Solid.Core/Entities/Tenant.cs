@@ -5,7 +5,7 @@ namespace newHouseCommittee.Entities
     public class Tenant
     {
         [Key]
-        public int Id { get; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public Biulding Biulding { get; set; }
