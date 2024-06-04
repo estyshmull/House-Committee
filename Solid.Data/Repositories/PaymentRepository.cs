@@ -1,4 +1,5 @@
-﻿using newHouseCommittee.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using newHouseCommittee.Entities;
 using Solid.Core.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,10 @@ namespace Solid.Data.Repositories
             this.dataContext = dataContext;
         }
 
-        public Payment AddPayment(Payment payment)
+        public async Task<Payment> AddPaymentAsync(Payment payment)
         {
             dataContext.PaymentList.Add(payment);
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
             return payment;
         }
          
@@ -29,9 +30,9 @@ namespace Solid.Data.Repositories
             return dataContext.PaymentList.Find(id);
         }
 
-        public List<Payment> GetPayments()
+        public async Task<IEnumerable<Payment>> GetPaymentsAsync()
         {
-            return dataContext.PaymentList.ToList();
+            return await dataContext.PaymentList.ToListAsync();
         }
 
         public Payment UpdatePayment(int id,Payment payment)

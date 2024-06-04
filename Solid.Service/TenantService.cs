@@ -16,14 +16,19 @@ namespace Solid.Service
             tenantRepository = repository;
         }
 
-        public Tenant AddTenant(Tenant tenant)
+        public async Task<Tenant> AddTenant(Tenant tenant)
         {
-            return tenantRepository.AddTenant(tenant);
+            return await tenantRepository.AddTenantAsync(tenant);
         }
 
-        public void DeleteTenant(int id)
+        public Task<Tenant> AddTenantAsync(Tenant tenant)
         {
-           tenantRepository.DeleteTenant(id);
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteTenantAsync(int id)
+        {
+             await tenantRepository.DeleteTenantAsync(id);
         }
 
         public Tenant GetTenantById(int id)
@@ -31,9 +36,9 @@ namespace Solid.Service
             return tenantRepository.GetTenantById(id);
         }
 
-        public List<Tenant> GetTenants()
+        public async Task<IEnumerable<Tenant>> GetTenantsAsync()
         {
-            return tenantRepository.GetTenants();
+            return await tenantRepository.GetTenantsAsync();
         }
 
         public Tenant UpdateTenant(int id, Tenant tenant)

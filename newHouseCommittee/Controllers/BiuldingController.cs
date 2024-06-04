@@ -24,9 +24,9 @@ namespace newHouseCommittee.Controllers
 
         // GET: api/<PaymentController>
         [HttpGet]
-        public ActionResult<Biulding> Get()
+        public async Task<ActionResult> Get()
         {
-            var list=biuldingService.GetBuildings();
+            var list=await biuldingService.GetBuildingsAsync();
             var listDto = _mapper.Map<IEnumerable<BiuldingDTOs>>(list);
             return Ok(listDto);
         }
@@ -50,10 +50,10 @@ namespace newHouseCommittee.Controllers
 
         // POST api/<PaymentController>
         [HttpPost]
-        public ActionResult Post([FromBody] BiuldingDTOs biulding)
+        public async Task<ActionResult> Post([FromBody] BiuldingDTOs biulding)
         {
             var biuldingToAdd = new Biulding { };
-            var newBiulding = biuldingService.AddBuilding(biuldingToAdd);
+            var newBiulding = await biuldingService.AddBuildingAsync(biuldingToAdd);
             return Ok(newBiulding);
         }
 

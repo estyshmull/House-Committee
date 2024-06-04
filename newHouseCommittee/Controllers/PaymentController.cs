@@ -25,11 +25,9 @@ namespace newHouseCommittee.Controllers
         }
         // GET: api/<MonthController>
         [HttpGet]
-        public ActionResult<Payment> Get()
+        public async Task<ActionResult> Get()
         {
-            var list = paymentService.GetPayments();
-            var listDto = _mapper.Map<IEnumerable<PaymentDTOs>>(list);
-            return Ok(listDto);
+            return Ok(await paymentService.GetPaymentsAsync());
         }
 
         // GET api/<MonthController>/5
@@ -43,10 +41,10 @@ namespace newHouseCommittee.Controllers
 
         // POST api/<MonthController>
         [HttpPost]
-        public ActionResult Post([FromBody] PaymentModel payment)
+        public async Task<ActionResult> Post([FromBody] PaymentModel payment)
         {
             var paymentToAdd=new Payment{ Month=payment.Month,Year=payment.Year};
-            var newPayment = paymentService.AddPayment(paymentToAdd);
+            var newPayment = await paymentService.AddPaymentAsync(paymentToAdd);
             return Ok(newPayment);
         }
 

@@ -18,9 +18,9 @@ namespace Solid.Service
            this.biuldingRepository = repository;
         }
 
-        public Biulding AddBuilding(Biulding biulding)
+        public async Task<Biulding> AddBuildingAsync(Biulding biulding)
         {
-            return biuldingRepository.AddBuilding(biulding);
+            return await biuldingRepository.AddBuildingAsync(biulding);
         }
 
         public Biulding GetBuildingById(int id)
@@ -33,9 +33,9 @@ namespace Solid.Service
             return biuldingRepository.GetBuildingByStreet(id, street);
         }
 
-        public List<Biulding> GetBuildings()
+        public async Task<IEnumerable<Biulding>> GetBuildingsAsync()
         {
-            return biuldingRepository.GetBuildings();
+            return await biuldingRepository.GetBuildingsAsync();
         }
 
         public Biulding UpdateBuilding(int id, Biulding biulding)

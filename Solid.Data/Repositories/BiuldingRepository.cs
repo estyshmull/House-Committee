@@ -1,4 +1,5 @@
-﻿using newHouseCommittee.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using newHouseCommittee.Entities;
 using Solid.Core.Repositories;
 using System;
 using System.Collections.Generic;
@@ -15,19 +16,19 @@ namespace Solid.Data.Repositories
         {
             this.dataContext = dataContext;
         }
-        public List<Biulding> GetBuildings()
+        public async Task <IEnumerable<Biulding>> GetBuildingsAsync()
         {
-            return dataContext.BiuldingList.ToList();
+            return await dataContext.BiuldingList.ToListAsync();
         }
         public Biulding GetBuildingById(int id)
         {
             return dataContext.BiuldingList.Find(id);
         }
 
-        public Biulding AddBuilding(Biulding biulding)
+        public async Task<Biulding> AddBuildingAsync(Biulding biulding)
         {
             dataContext.BiuldingList.Add(biulding);
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
             return biulding;
         }
 

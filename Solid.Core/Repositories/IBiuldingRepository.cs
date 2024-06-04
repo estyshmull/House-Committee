@@ -9,10 +9,10 @@ namespace Solid.Core.Repositories
 {
     public interface IBiuldingRepository
     {
-        List<Biulding> GetBuildings();
+       Task<IEnumerable<Biulding>> GetBuildingsAsync();
         Biulding GetBuildingById(int id);
         Biulding GetBuildingByStreet(int id,string street);
-        Biulding AddBuilding(Biulding biulding);
+        Task<Biulding> AddBuildingAsync(Biulding biulding);
         Biulding UpdateBuilding(int id,Biulding biulding);
     }
 }

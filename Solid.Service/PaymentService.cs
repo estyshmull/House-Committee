@@ -18,9 +18,9 @@ namespace Solid.Service
             this.paymentRepository = payment;
         }
 
-        public Payment AddPayment(Payment payment)
+        public async Task<Payment> AddPaymentAsync(Payment payment)
         {
-            return paymentRepository.AddPayment(payment);
+            return await paymentRepository.AddPaymentAsync(payment);
         }
 
         public Payment GetPaymentById(int id)
@@ -28,9 +28,9 @@ namespace Solid.Service
             return paymentRepository.GetPaymentById(id);
         }
 
-        public List<Payment> GetPayments()
+        public async Task<IEnumerable<Payment>> GetPaymentsAsync()
         {
-            return paymentRepository.GetPayments();
+            return await paymentRepository.GetPaymentsAsync();
         }
 
         public Payment UpdatePayment(int id, Payment payment)

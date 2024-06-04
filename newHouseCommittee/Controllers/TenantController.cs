@@ -25,11 +25,9 @@ namespace newHouseCommittee.Controllers
         }
         // GET: api/<TenantController>
         [HttpGet]
-        public ActionResult<Tenant> Get()
+        public async Task<ActionResult> Get()
         {
-            var list = tenantService.GetTenants();
-            var listDto = _mapper.Map<IEnumerable<TenantDTOs>>(list);
-            return Ok(listDto);
+            return Ok(await tenantService.GetTenantsAsync());
         }
 
         // GET api/<TenantController>/5
@@ -43,10 +41,10 @@ namespace newHouseCommittee.Controllers
 
         // POST api/<TenantController>
         [HttpPost]
-        public ActionResult Post([FromBody] TenantModel tenant)
+        public async Task<ActionResult> Post([FromBody] TenantModel tenant)
         {
             var tenantToAdd = new Tenant {Name=tenant.Name,Phone=tenant.Phone };
-            var newTenant = tenantService.AddTenant(tenantToAdd);
+            var newTenant = tenantService.AddTenantAsync(tenantToAdd);
             return Ok(newTenant);
         }
 
@@ -60,9 +58,9 @@ namespace newHouseCommittee.Controllers
         }
         // DELETE api/< TenantController >/ 5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            tenantService.DeleteTenant(id);
+            await tenantService.DeleteTenantAsync(id);
             return NoContent();
         }
     }

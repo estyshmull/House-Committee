@@ -1,4 +1,5 @@
-﻿using newHouseCommittee.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using newHouseCommittee.Entities;
 using Solid.Core.Repositories;
 using System;
 using System.Collections.Generic;
@@ -16,18 +17,18 @@ namespace Solid.Data.Repositories
             this.dataContext = dataContext;
         }
 
-        public Tenant AddTenant(Tenant tenant)
+        public async Task<Tenant> AddTenantAsync(Tenant tenant)
         {
             dataContext.TenantList.Add(tenant);
-            dataContext.SaveChanges();
+           await dataContext.SaveChangesAsync();
             return tenant;
         }
 
-        public void DeleteTenant(int id)
+        public async Task DeleteTenantAsync(int id)
         {
             var user = GetTenantById(id);
             dataContext.TenantList.Remove(user);
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
 
         public Tenant GetTenantById(int id)
@@ -35,9 +36,9 @@ namespace Solid.Data.Repositories
             return dataContext.TenantList.Find(id);
         }
 
-        public List<Tenant> GetTenants()
+        public async Task <IEnumerable<Tenant>> GetTenantsAsync()
         {
-            return dataContext.TenantList.ToList();
+            return await dataContext.TenantList.ToListAsync();
         }
 
         public Tenant UpdateTenant(int id, Tenant tenant)

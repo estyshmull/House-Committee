@@ -9,9 +9,9 @@ namespace Solid.Core.Repositories
 {
     public interface IPaymentRepository
     {
-        List<Payment> GetPayments();
+        Task<IEnumerable<Payment>> GetPaymentsAsync();
         Payment GetPaymentById(int id);
-        Payment AddPayment(Payment payment);
+        Task<Payment> AddPaymentAsync(Payment payment);
         Payment UpdatePayment(int id,Payment payment);
     }
 }
